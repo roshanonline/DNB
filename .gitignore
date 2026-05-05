@@ -1,0 +1,21 @@
+# Node
+node_modules/
+
+# Build files
+dist/
+frontend/dist/
+
+# Media / uploads
+backend/media/
+
+# Python
+__pycache__/
+*.pyc
+
+# Environment
+.env
+
+# OS
+.DS_Store
+Thumbs.db
+*.mp4

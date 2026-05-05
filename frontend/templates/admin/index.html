@@ -1,0 +1,47 @@
+{% extends "admin/index.html" %}
+{% load static %}
+
+{% block extrahead %}
+{{ block.super }}
+<style>
+    .notice-board-link {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white !important;
+        padding: 20px;
+        border-radius: 12px;
+        text-decoration: none;
+        display: block;
+        margin: 20px 0;
+        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .notice-board-link:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+    }
+    
+    .notice-board-link h2 {
+        margin: 0 0 8px 0;
+        font-size: 24px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+    
+    .notice-board-link p {
+        margin: 0;
+        opacity: 0.9;
+        font-size: 14px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<a href="{% url 'admin:notices_notice_board' %}" class="notice-board-link">
+    <h2>📋 Notice Board Dashboard</h2>
+    <p>View all notices in a visual grid layout with thumbnails and ML scores</p>
+</a>
+
+{{ block.super }}
+{% endblock %}

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/logo.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="SmartBoard 360 - Intelligent Digital Notice Board & Alert Management System" />
+    <meta name="theme-color" content="#6366f1" />
+    <title>SmartBoard 360</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * { box-sizing: border-box; }
+      body { margin: 0; font-family: 'Inter', sans-serif; }
+      #root { min-height: 100vh; }
+      /* Splash screen */
+      #splash {
+        position: fixed; inset: 0; z-index: 9999;
+        background: linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #4c1d95 100%);
+        display: flex; align-items: center; justify-content: center;
+        flex-direction: column; gap: 16px;
+        transition: opacity 0.5s ease;
+      }
+      #splash.hidden { opacity: 0; pointer-events: none; }
+      #splash-logo {
+        width: 80px; height: 80px;
+        background: linear-gradient(135deg, #6366f1, #8b5cf6);
+        border-radius: 20px;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 40px; font-weight: 800; color: white;
+        animation: splashBounce 0.6s ease-out;
+        box-shadow: 0 0 40px rgba(99,102,241,0.6);
+      }
+      #splash h1 {
+        color: white; font-size: 28px; font-weight: 700; margin: 0;
+        animation: splashFade 0.8s ease-out 0.2s both;
+      }
+      #splash p {
+        color: #a5b4fc; font-size: 14px; margin: 0;
+        animation: splashFade 0.8s ease-out 0.4s both;
+      }
+      #splash-bar {
+        width: 200px; height: 4px; background: rgba(255,255,255,0.2);
+        border-radius: 2px; overflow: hidden;
+        animation: splashFade 0.8s ease-out 0.4s both;
+      }
+      #splash-progress {
+        height: 100%; background: linear-gradient(90deg, #6366f1, #a78bfa);
+        border-radius: 2px; animation: loadBar 1.2s ease-out 0.4s forwards;
+        width: 0%;
+      }
+      @keyframes splashBounce {
+        0% { transform: scale(0) rotate(-10deg); opacity: 0; }
+        70% { transform: scale(1.1) rotate(2deg); }
+        100% { transform: scale(1) rotate(0); opacity: 1; }
+      }
+      @keyframes splashFade {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+      @keyframes loadBar {
+        from { width: 0%; }
+        to { width: 100%; }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Splash Screen -->
+    <div id="splash">
+      <div id="splash-logo">S</div>
+      <h1>SmartBoard 360</h1>
+      <p>Intelligent Digital Notice Board</p>
+      <div id="splash-bar">
+        <div id="splash-progress"></div>
+      </div>
+    </div>
+
+    <div id="root"></div>
+
+    <script>
+      // Hide splash after load
+      window.addEventListener('load', function () {
+        setTimeout(function () {
+          var splash = document.getElementById('splash')
+          if (splash) {
+            splash.classList.add('hidden')
+            setTimeout(function () { splash.remove() }, 500)
+          }
+        }, 1400)
+      })
+    </script>
+    <script type="module" src="/src/app/main.jsx"></script>
+  </body>
+</html>
