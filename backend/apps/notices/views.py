@@ -1201,6 +1201,12 @@ class SmartSearchView(APIView):
       category : optional – filter by category before semantic ranking
 
     Returns [{...notice fields, similarity_score}, ...]
+    
+    FALLBACK MECHANISM:
+    ──────────────────
+    If semantic search returns 0 results OR query is very short (≤3 chars),
+    fallback to keyword search by title/description.
+    This ensures queries like "fe" don't return empty results.
     """
     permission_classes = [AllowAny]
 
@@ -1212,12 +1218,25 @@ class SmartSearchView(APIView):
         top_k    = int(request.GET.get('top_k', 10))
         category = request.GET.get('category', '')
 
-        notices = Notice.objects.filter(status='APPROVED')
+        notices_qs = Notice.objects.filter(status='APPROVED')
         if category:
-            notices = notices.filter(category__iexact=category)
+            notices_qs = notices_qs.filter(category__iexact=category)
 
-        # DistilBERT semantic search
-        results = semantic_search(query, list(notices), top_k=top_k)
+        # DistilBERT semantic search (primary)
+        results = semantic_search(query, list(notices_qs), top_k=top_k)
+        
+        # FALLBACK: If semantic search found nothing OR query is very short,
+        # use keyword search (title + description contains)
+        if len(results) == 0 or len(query) <= 3:
+            results = list(notices_qs.filter(
+                Q(title__icontains=query) | Q(description__icontains=query)
+            )[:top_k])
+            # For keyword matches, set similarity_score to 1.0
+            for notice in results:
+                notice.similarity_score = 1.0
+            search_method = "keyword"
+        else:
+            search_method = "semantic"
 
         # Also auto-suggest category from the query itself
         suggested_cat, confidence = suggest_category(query)
@@ -1227,6 +1246,7 @@ class SmartSearchView(APIView):
             'query':              query,
             'results':            serializer.data,
             'count':              len(results),
+            'search_method':      search_method,  # "semantic" or "keyword"
             'suggested_category': suggested_cat,
             'category_confidence': confidence,
         })

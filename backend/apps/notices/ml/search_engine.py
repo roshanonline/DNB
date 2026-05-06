@@ -114,6 +114,7 @@ def semantic_search(query: str, notices, top_k: int = 10, threshold: float = 0.2
     notices   : queryset / list of Notice objects
     top_k     : max results to return
     threshold : minimum cosine similarity (0→1) to include a result
+                (adjusted for short queries to be more lenient)
 
     Returns
     -------
@@ -137,8 +138,13 @@ def semantic_search(query: str, notices, top_k: int = 10, threshold: float = 0.2
             sim(query, "Test delayed...") = 0.87  ← HIGH similarity
             sim(query, "Workshop...") = 0.12  ← LOW similarity
     
-    Step 4: Filter by threshold (default 0.25) and sort by score DESC
+    Step 4: Filter by threshold (adjusted for query length) and sort DESC
             Return: ["Examination rescheduled", "Test delayed..."]
+    
+    SHORT QUERY HANDLING:
+    ────────────────────
+    For queries ≤ 3 characters, threshold is lowered to 0.15
+    to allow more results for abbreviations like "fe", "ai", "ml"
     """
     if not query or not notices:
         logger.debug(f"Early return: query={bool(query)}, notices={bool(notices)}")
@@ -151,7 +157,13 @@ def semantic_search(query: str, notices, top_k: int = 10, threshold: float = 0.2
             logger.debug("No notices to search")
             return []
         
-        logger.info(f"🔍 Semantic search: query='{query}' | notices={len(notices)}")
+        # ── Adjust threshold for short queries ──
+        effective_threshold = threshold
+        if len(query) <= 3:
+            effective_threshold = 0.15  # More lenient for short queries
+            logger.debug(f"Short query detected: '{query}' → threshold lowered to {effective_threshold}")
+        
+        logger.info(f"🔍 Semantic search: query='{query}' (len={len(query)}) | notices={len(notices)} | threshold={effective_threshold}")
         
         # Get model
         model = _get_model()
@@ -189,11 +201,11 @@ def semantic_search(query: str, notices, top_k: int = 10, threshold: float = 0.2
         results = [
             (n, float(s))
             for n, s in zip(notices, sims)
-            if s >= threshold
+            if s >= effective_threshold  # Use adjusted threshold
         ]
         results.sort(key=lambda x: x[1], reverse=True)
         
-        logger.info(f"   ✅ Found {len(results)} results (threshold={threshold})")
+        logger.info(f"   ✅ Found {len(results)} results (threshold={effective_threshold})")
 
         # Attach scores
         for notice, score in results[:top_k]:
