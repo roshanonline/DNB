@@ -1,9 +1,12 @@
 """
-Deadline Risk Prediction – Cox Proportional Hazard Model
+Deadline Risk Prediction – Engagement/Deadline Heuristic
 =========================================================
-Algorithm : Cox Proportional Hazard Model via `lifelines`
+Algorithm : Interpretable heuristic over engagement rate, days-remaining
+            (sigmoid), unread-urgent count and category urgency.
+            (Originally specced as a Cox model via `lifelines`; that needs
+            historical missed-deadline events we don't collect, and the
+            library added a heavy scipy pin, so it's a pure-Python heuristic.)
 Where used: GET /api/notices/dashboard/ – renders risk banner on student dashboard
-            Predicts likelihood of missing deadlines (survival time until deadline)
 
 Why Cox Model?
 ──────────────
@@ -22,13 +25,11 @@ Key hazard factors:
   3. unread_count       : urgent notices student hasn't viewed yet
   4. category_urgency   : academic > exam > placement > event > others
 
-REQUIREMENTS:
-  pip install lifelines numpy pandas
+REQUIREMENTS: none (pure Python standard library)
 """
 
 import logging
-import numpy as np
-import pandas as pd
+import math
 from datetime import date, timedelta
 
 # ── Logging setup ────────────────────────────────────────────────────────
@@ -74,7 +75,7 @@ def calculate_risk_score(user, approved_notices):
         today = date.today()
         
         # Get user's engagement logs
-        from .models import EngagementLog
+        from apps.notices.models import EngagementLog
         engagement_logs = EngagementLog.objects.filter(user=user)
         viewed_notice_ids = set(engagement_logs.filter(viewed=True).values_list('notice_id', flat=True))
         
@@ -114,7 +115,7 @@ def calculate_risk_score(user, approved_notices):
             # At 7 days: factor ≈ 0.1
             # At 3 days: factor ≈ 0.5
             # At 0 days: factor = 1.0
-            days_remaining_factor = 1.0 / (1.0 + np.exp(3 - min_days))  # sigmoid
+            days_remaining_factor = 1.0 / (1.0 + math.exp(min(30, 3 - min_days)))  # sigmoid
         else:
             min_days = 999
             days_remaining_factor = 0.0
@@ -138,10 +139,8 @@ def calculate_risk_score(user, approved_notices):
         
         # Weighted average of categories in upcoming deadlines
         if upcoming:
-            avg_urgency = np.mean([
-                CATEGORY_URGENCY.get(n.category, 0.5)
-                for n in upcoming
-            ])
+            _urgencies = [CATEGORY_URGENCY.get(n.category, 0.5) for n in upcoming]
+            avg_urgency = sum(_urgencies) / len(_urgencies)
         else:
             avg_urgency = 0.0
         

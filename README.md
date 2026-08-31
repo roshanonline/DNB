@@ -44,3 +44,8 @@ It includes machine learning-based prioritization, semantic search, personalized
 ```bash
 cd backend
 python manage.py runserver
+
+Set-Location 'C:\Users\kirthick Roshan S\OneDrive\Documents\DNB\backend'; & 'C:\Users\kirthick Roshan S\AppData\Local\Programs\Python\Python311\python.exe' manage.py runserver 0.0.0.0:8000python manage.py runserver
+
+
+ cmd /d /c "cd /d C:\Users\kirthick Roshan S\OneDrive\Documents\DNB\frontend && set PATH=C:\Program Files\nodejs;%PATH%&& npm run dev -- --host 0.0.0.0 --port 3000"

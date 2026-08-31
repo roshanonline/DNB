@@ -57,9 +57,10 @@ ACTION_RATINGS = {
 
 # ── Build ratings DataFrame ─────────────────────────────────────────────
 
-def _build_ratings_df():
+def _build_ratings():
     """
-    Aggregate engagement signals into a user/notice rating DataFrame.
+    Aggregate engagement signals into a list of {user_id, notice_id, rating}
+    dicts, averaged per (user, notice) pair.
     Returns None if not enough data exists.
     """
     try:
@@ -104,11 +105,16 @@ def _build_ratings_df():
         if len(rows) < MIN_INTERACTIONS:
             return None
 
-        import pandas as pd
-        df = pd.DataFrame(rows)
         # Average ratings per (user, notice) pair
-        df = df.groupby(["user_id", "notice_id"])["rating"].mean().reset_index()
-        return df
+        agg = {}
+        for r in rows:
+            key = (r["user_id"], r["notice_id"])
+            bucket = agg.setdefault(key, [])
+            bucket.append(r["rating"])
+        return [
+            {"user_id": u, "notice_id": n, "rating": sum(v) / len(v)}
+            for (u, n), v in agg.items()
+        ]
 
     except Exception as e:
         print(f"[SVD] Error building ratings: {e}")
@@ -123,9 +129,9 @@ def train_recommender():
     using sklearn TruncatedSVD. Persists model to disk.
     Returns model dict or None if not enough data.
     """
-    df = _build_ratings_df()
+    ratings = _build_ratings()
 
-    if df is None:
+    if ratings is None:
         print(f"[SVD] Need >={MIN_INTERACTIONS} interactions to train. Skipping.")
         return None
 
@@ -133,8 +139,8 @@ def train_recommender():
         from sklearn.decomposition import TruncatedSVD
 
         # Build integer indices
-        user_ids   = sorted(df["user_id"].unique())
-        notice_ids = sorted(df["notice_id"].unique())
+        user_ids   = sorted({r["user_id"] for r in ratings})
+        notice_ids = sorted({r["notice_id"] for r in ratings})
         user_idx   = {uid: i for i, uid in enumerate(user_ids)}
         notice_idx = {nid: i for i, nid in enumerate(notice_ids)}
 
@@ -143,10 +149,8 @@ def train_recommender():
 
         # Build User x Notice rating matrix (sparse fill with 0 = no interaction)
         R = np.zeros((n_users, n_notices), dtype=np.float32)
-        for _, row in df.iterrows():
-            ui = user_idx[row["user_id"]]
-            ni = notice_idx[row["notice_id"]]
-            R[ui, ni] = row["rating"]
+        for r in ratings:
+            R[user_idx[r["user_id"]], notice_idx[r["notice_id"]]] = r["rating"]
 
         # TruncatedSVD: R ~ U @ Vt
         n_components = min(N_FACTORS, n_users - 1, n_notices - 1)
@@ -169,7 +173,7 @@ def train_recommender():
         with open(MODEL_PATH, "wb") as f:
             pickle.dump(model_data, f)
 
-        print(f"[SVD] Trained on {len(df)} ratings ({n_users} users, {n_notices} notices). Saved to {MODEL_PATH}")
+        print(f"[SVD] Trained on {len(ratings)} ratings ({n_users} users, {n_notices} notices). Saved to {MODEL_PATH}")
         return model_data
 
     except Exception as e:

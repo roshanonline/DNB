@@ -1,0 +1,200 @@
+DNB/
+|-- .vscode/
+|   |-- extensions.json
+|   `-- settings.json
+|-- backend/
+|   |-- apps/
+|   |   |-- accounts/
+|   |   |   |-- migrations/
+|   |   |   |   |-- 0001_initial.py
+|   |   |   |   |-- 0002_user_initial_password.py
+|   |   |   |   |-- 0003_user_approval_fields.py
+|   |   |   |   |-- 0004_user_aadhaar_field.py
+|   |   |   |   |-- 0005_user_year_dob.py
+|   |   |   |   |-- 0006_notificationprefs_new_categories.py
+|   |   |   |   |-- 0007_add_login_activity_models.py
+|   |   |   |   |-- 0008_rename_admin_login_user_id_login_ti_idx_admin_login_user_id_6981ef_idx_and_more.py
+|   |   |   |   `-- __init__.py
+|   |   |   |-- __init__.py
+|   |   |   |-- admin.py
+|   |   |   |-- apps.py
+|   |   |   |-- models.py
+|   |   |   |-- serializers.py
+|   |   |   |-- urls.py
+|   |   |   `-- views.py
+|   |   |-- notices/
+|   |   |   |-- management/
+|   |   |   |   |-- commands/
+|   |   |   |   |   |-- __init__.py
+|   |   |   |   |   |-- reset_priority_scores.py
+|   |   |   |   |   `-- set_april_deadlines.py
+|   |   |   |   `-- __init__.py
+|   |   |   |-- migrations/
+|   |   |   |   |-- 0001_initial.py
+|   |   |   |   |-- 0002_usernotification_noticeattachment.py
+|   |   |   |   |-- 0003_notice_new_fields.py
+|   |   |   |   |-- 0004_alter_notice_created_by_alter_notice_department_and_more.py
+|   |   |   |   |-- 0005_alter_usernotification_notification_type.py
+|   |   |   |   |-- 0006_notice_internship_targetyear.py
+|   |   |   |   |-- 0007_seed_april_deadlines.py
+|   |   |   |   |-- 0008_staff_notice.py
+|   |   |   |   `-- __init__.py
+|   |   |   |-- ml/
+|   |   |   |   |-- __init__.py
+|   |   |   |   |-- priority_engine.py
+|   |   |   |   |-- recommender.py
+|   |   |   |   |-- risk_engine.py
+|   |   |   |   |-- search_engine.py
+|   |   |   |   `-- svd_model.pkl
+|   |   |   |-- __init__.py
+|   |   |   |-- admin.py
+|   |   |   |-- apps.py
+|   |   |   |-- consumers.py
+|   |   |   |-- lgbm_model.pkl
+|   |   |   |-- models.py
+|   |   |   |-- routing.py
+|   |   |   |-- serializers.py
+|   |   |   |-- urls.py
+|   |   |   `-- views.py
+|   |   |-- reminders/
+|   |   |   |-- migrations/
+|   |   |   |   |-- 0001_initial.py
+|   |   |   |   `-- __init__.py
+|   |   |   |-- __init__.py
+|   |   |   |-- admin.py
+|   |   |   |-- apps.py
+|   |   |   |-- models.py
+|   |   |   |-- serializers.py
+|   |   |   |-- tasks.py
+|   |   |   |-- urls.py
+|   |   |   `-- views.py
+|   |   |-- staff/
+|   |   |   |-- migrations/
+|   |   |   |   |-- 0001_initial.py
+|   |   |   |   |-- 0002_seed_default_staff.py
+|   |   |   |   |-- 0003_staffreminder.py
+|   |   |   |   |-- 0004_update_staffloginactivity.py
+|   |   |   |   |-- 0005_rename_staff_login_staff_id_login_ti_idx_staff_login_staff_i_3df0f2_idx_and_more.py
+|   |   |   |   |-- 0006_alter_staffloginactivity_created_at.py
+|   |   |   |   `-- __init__.py
+|   |   |   |-- apps.py
+|   |   |   |-- models.py
+|   |   |   |-- serializers.py
+|   |   |   |-- urls.py
+|   |   |   `-- views.py
+|   |   |-- timetable/
+|   |   |   |-- migrations/
+|   |   |   |   |-- 0001_initial.py
+|   |   |   |   |-- 0002_add_timeslot_day.py
+|   |   |   |   |-- 0003_alter_timeslot_options.py
+|   |   |   |   |-- 0003_timeslot_room_staff.py
+|   |   |   |   |-- 0004_merge_20260502_0837.py
+|   |   |   |   |-- 0004_timeslot_subject_name.py
+|   |   |   |   |-- 0005_merge_20260502_0915.py
+|   |   |   |   |-- 0009_remove_subject_schedule_fields.py
+|   |   |   |   `-- __init__.py
+|   |   |   |-- __init__.py
+|   |   |   |-- admin.py
+|   |   |   |-- algorithm.py
+|   |   |   |-- apps.py
+|   |   |   |-- models.py
+|   |   |   |-- serializers.py
+|   |   |   |-- urls.py
+|   |   |   `-- views.py
+|   |   `-- __init__.py
+|   |-- config/
+|   |   |-- __init__.py
+|   |   |-- asgi.py
+|   |   |-- settings.py
+|   |   |-- urls.py
+|   |   `-- wsgi.py
+|   |-- database/
+|   |   |-- DNB.db
+|   |   |-- DNB.db-shm
+|   |   `-- DNB.db-wal
+|   |-- static/
+|   |   `-- README.md
+|   |-- db.sqlite3
+|   `-- manage.py
+|-- Backup/
+|   |-- notice.db
+|   `-- staff.db
+|-- frontend/
+|   |-- public/
+|   |   `-- logo.svg
+|   |-- src/
+|   |   |-- app/
+|   |   |   |-- providers/
+|   |   |   |   |-- AuthProvider.jsx
+|   |   |   |   `-- ThemeProvider.jsx
+|   |   |   |-- App.jsx
+|   |   |   |-- main.jsx
+|   |   |   `-- routes.jsx
+|   |   |-- assets/
+|   |   |   `-- .gitkeep
+|   |   |-- features/
+|   |   |   |-- admin/
+|   |   |   |   `-- pages/
+|   |   |   |       |-- AdminDashboard.jsx
+|   |   |   |       `-- LoginHistory.jsx
+|   |   |   |-- auth/
+|   |   |   |   |-- api/
+|   |   |   |   |   |-- authApi.js
+|   |   |   |   |   `-- loginHistoryApi.js
+|   |   |   |   |-- context/
+|   |   |   |   |   `-- AuthContext.jsx
+|   |   |   |   `-- pages/
+|   |   |   |       `-- Login.jsx
+|   |   |   |-- department/
+|   |   |   |   `-- pages/
+|   |   |   |       |-- DepartmentDashboard.jsx
+|   |   |   |       |-- DepartmentProfile.jsx
+|   |   |   |       |-- HodAccess.jsx
+|   |   |   |       `-- TimetableGenerator.jsx
+|   |   |   |-- notice/
+|   |   |   |   |-- api/
+|   |   |   |   |   `-- noticeApi.js
+|   |   |   |   |-- components/
+|   |   |   |   |   `-- BigThumbnail.jsx
+|   |   |   |   `-- pages/
+|   |   |   |       `-- NoticeDetail.jsx
+|   |   |   |-- staff/
+|   |   |   |   |-- pages/
+|   |   |   |   |   `-- StaffDashboard.jsx
+|   |   |   |   |-- services/
+|   |   |   |   |   `-- staffApi.js
+|   |   |   |   `-- styles/
+|   |   |   |       `-- staff.css
+|   |   |   `-- student/
+|   |   |       `-- pages/
+|   |   |           |-- LoginHistory.jsx
+|   |   |           |-- StudentDashboard.jsx
+|   |   |           `-- StudentProfile.jsx
+|   |   `-- shared/
+|   |       |-- components/
+|   |       |   |-- Navbar.jsx
+|   |       |   `-- ProtectedRoute.jsx
+|   |       |-- services/
+|   |       |   |-- api.js
+|   |       |   `-- socket.js
+|   |       |-- styles/
+|   |       |   `-- index.css
+|   |       `-- utils/
+|   |           `-- .gitkeep
+|   |-- templates/
+|   |   `-- admin/
+|   |       |-- notices/
+|   |       |   `-- notice_board.html
+|   |       `-- index.html
+|   |-- index.html
+|   |-- package-lock.json
+|   |-- package.json
+|   |-- postcss.config.js
+|   |-- tailwind.config.js
+|   `-- vite.config.js
+|-- .gitignore
+|-- README.md
+|-- requirements.txt
+|-- start.bat
+|-- start.ps1
+`-- user.txt

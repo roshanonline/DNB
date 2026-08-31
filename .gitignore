@@ -11,9 +11,17 @@ backend/media/
 # Python
 __pycache__/
 *.pyc
+.venv/
+venv/
+
+# Trained ML model artifacts (regenerated at runtime)
+*.pkl
 
 # Environment
 .env
+
+# Local credential dump (plain-text passwords)
+user.txt
 
 # OS
 .DS_Store

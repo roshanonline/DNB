@@ -1317,24 +1317,9 @@ class RetrainMLView(APIView):
         svd_model = train_recommender()
         results['svd'] = 'retrained' if svd_model else 'skipped (not enough data)'
 
-        # Retrain LightGBM using live engagement data
-        try:
-            import pandas as pd
-            from .ml.priority_engine import retrain_model, FEATURE_COLS
-            from .ml.priority_engine import _build_features
-
-            notices = list(Notice.objects.filter(status='APPROVED'))
-            rows   = [_build_features(n, 'CSE') for n in notices]
-            labels = [1 if n.view_count >= 5 else 0 for n in notices]
-
-            if len(set(labels)) == 2:   # need both classes
-                df = pd.DataFrame(rows, columns=FEATURE_COLS)
-                retrain_model(df, labels)
-                results['lightgbm'] = f'retrained on {len(labels)} notices'
-            else:
-                results['lightgbm'] = 'skipped (need both 0 and 1 labels)'
-        except Exception as e:
-            results['lightgbm'] = f'error: {e}'
+        # Priority ranking is now an interpretable weighted-sum formula
+        # (see ml/priority_engine.py) – nothing to train.
+        results['priority'] = 'weighted-sum formula – no training needed'
 
         return Response({'status': 'done', 'results': results})
 

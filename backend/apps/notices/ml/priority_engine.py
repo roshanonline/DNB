@@ -39,7 +39,6 @@ notices (DB) → build feature matrix → apply weighted formula → sort descen
 """
 
 from datetime import date
-import pandas as pd
 import warnings
 warnings.filterwarnings("ignore")
 
