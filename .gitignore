@@ -1,5 +1,10 @@
+# Editor
+.vscode/
+
 # Node
 node_modules/
+frontend/node_modules/
+frontend/.vite/
 
 # Build files
 dist/
@@ -8,11 +13,20 @@ frontend/dist/
 # Media / uploads
 backend/media/
 
+# SQLite databases (regenerated / seeded locally)
+*.sqlite3
+*.db-shm
+*.db-wal
+Backup/
+
 # Python
 __pycache__/
+**/__pycache__/
 *.pyc
+**/*.pyc
 .venv/
 venv/
+backend/venv/
 
 # Trained ML model artifacts (regenerated at runtime)
 *.pkl

@@ -41,7 +41,7 @@ function priorityBg(score) {
 }
 
 // ── Attachment badge helpers ──────────────────────────────────────────
-const MEDIA_BASE = 'http://localhost:8000/media'
+const MEDIA_BASE = '/media'
 
 const AttachBadge = ({ label, colorClass, icon: Icon, href }) => {
   const inner = (
@@ -1235,7 +1235,7 @@ const StudentDashboard = () => {
                 {/* Modal Content - Notice Detail View */}
                 {(() => {
                   const cfg = getCatCfg(notificationNotice.category)
-                  const thumbSrc = notificationNotice.image_file ? `http://localhost:8000/media/${notificationNotice.image_file}` : undefined
+                  const thumbSrc = notificationNotice.image_file ? `/media/${notificationNotice.image_file}` : undefined
                   
                   return (
                     <>

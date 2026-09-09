@@ -16,7 +16,8 @@ class WebSocketService {
       return
     }
 
-    const wsUrl = `ws://localhost:8000/ws/notifications/?token=${token}`
+    const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:'
+    const wsUrl = `${protocol}//${window.location.host}/ws/notifications/?token=${token}`
     
     this.socket = new WebSocket(wsUrl)
 

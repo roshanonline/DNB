@@ -1,7 +1,4 @@
 DNB/
-|-- .vscode/
-|   |-- extensions.json
-|   `-- settings.json
 |-- backend/
 |   |-- apps/
 |   |   |-- accounts/
@@ -44,13 +41,11 @@ DNB/
 |   |   |   |   |-- priority_engine.py
 |   |   |   |   |-- recommender.py
 |   |   |   |   |-- risk_engine.py
-|   |   |   |   |-- search_engine.py
-|   |   |   |   `-- svd_model.pkl
+|   |   |   |   `-- search_engine.py
 |   |   |   |-- __init__.py
 |   |   |   |-- admin.py
 |   |   |   |-- apps.py
 |   |   |   |-- consumers.py
-|   |   |   |-- lgbm_model.pkl
 |   |   |   |-- models.py
 |   |   |   |-- routing.py
 |   |   |   |-- serializers.py
@@ -109,16 +104,10 @@ DNB/
 |   |   |-- urls.py
 |   |   `-- wsgi.py
 |   |-- database/
-|   |   |-- DNB.db
-|   |   |-- DNB.db-shm
-|   |   `-- DNB.db-wal
+|   |   `-- DNB.db
 |   |-- static/
 |   |   `-- README.md
-|   |-- db.sqlite3
 |   `-- manage.py
-|-- Backup/
-|   |-- notice.db
-|   `-- staff.db
 |-- frontend/
 |   |-- public/
 |   |   `-- logo.svg
@@ -193,8 +182,10 @@ DNB/
 |   |-- tailwind.config.js
 |   `-- vite.config.js
 |-- .gitignore
+|-- DNB_EC2_Nginx_Deployment_Guide.docx
 |-- README.md
 |-- requirements.txt
 |-- start.bat
 |-- start.ps1
+|-- tree.txt
 `-- user.txt

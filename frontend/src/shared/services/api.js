@@ -4,7 +4,7 @@
 import axios from 'axios'
 
 const api = axios.create({
-  baseURL: 'http://localhost:8000/api',
+  baseURL: '/api',
   headers: {
     'Content-Type': 'application/json',
   },
@@ -42,7 +42,7 @@ api.interceptors.response.use(
       try {
         const refreshToken = localStorage.getItem('refresh_token')
         if (!refreshToken) throw new Error('No refresh token')
-        const response = await axios.post('http://localhost:8000/api/accounts/token/refresh/', {
+        const response = await axios.post('/api/accounts/token/refresh/', {
           refresh: refreshToken,
         })
 
@@ -81,13 +81,15 @@ export const uploadAttachment = (noticeId, file) => {
 export const getAttachments = (noticeId) => api.get(`/notices/${noticeId}/attachments/`)
 
 /**
- * Force-download any URL as a file (works cross-origin via blob).
- * @param {string} url   – full URL to the file
+ * Force-download any URL as a file (works via blob).
+ * Accepts a same-origin path returned by Django (e.g. "/media/notices/x.pdf")
+ * or a full URL. Uses a bare axios call so the "/api" baseURL is not prepended.
+ * @param {string} url   – file path or URL (as returned by the API)
  * @param {string} name  – desired filename
  */
 export const downloadFile = async (url, name) => {
   try {
-    const response = await api.get(url, { responseType: 'blob' })
+    const response = await axios.get(url, { responseType: 'blob' })
     const blob = response.data
     const blobUrl = URL.createObjectURL(blob)
     const a = document.createElement('a')

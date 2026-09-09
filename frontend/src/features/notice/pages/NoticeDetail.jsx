@@ -340,7 +340,7 @@ const NoticeDetail = () => {
                           </div>
                           <button
                             type="button"
-                            onClick={() => downloadFile(`http://localhost:8000${att.file_url}`, att.file_name)}
+                            onClick={() => downloadFile(att.file_url, att.file_name)}
                             className="flex-shrink-0 ml-3 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-semibold transition-colors flex items-center space-x-1.5"
                           >
                             <Download className="w-4 h-4" />
@@ -364,7 +364,7 @@ const NoticeDetail = () => {
                         </div>
                         <button
                           type="button"
-                          onClick={() => downloadFile(`http://localhost:8000${notice.attachment}`, 'attachment')}
+                          onClick={() => downloadFile(notice.attachment, 'attachment')}
                           className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-semibold transition-colors flex items-center space-x-1.5"
                         >
                           <Download className="w-4 h-4" />
